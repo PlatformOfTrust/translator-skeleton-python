@@ -16,7 +16,8 @@ routes.setup_routing(application)
 
 log.logger.info('Translator API started...')
 
-log.logger.info(f'''Application settings:
+log.logger.info(f'''
+Application settings:
     server = "{settings.SERVER}"
     host = "{settings.HOST}"
     port = {settings.PORT}

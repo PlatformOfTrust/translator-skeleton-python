@@ -42,13 +42,15 @@ def validate(headers: dict, body: dict) -> None:
     :raise MissingRequiredHeaderError: If the validation fails.
     """
     for header, rules in SUPPORTED_HEADERS.items():
-        if rules['required'] and header not in headers:
+        if rules['required'] and header.lower() not in headers:
             raise MissingRequiredHeaderError(
-                f'Missing required header "{header}"'
+                f'Missing required header "{header.lower()}"'
             )
 
     if validate_signature(headers[X_POT_SIGNATURE], json.dumps(body)):
         raise ValidationError('Signature validation failed.')
+
+    # Todo: validate timestamp as well.
 
 
 def validate_signature(signature: str, body: str) -> bool:

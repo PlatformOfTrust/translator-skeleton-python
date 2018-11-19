@@ -40,3 +40,17 @@ class TestStatusController(BaseTestCase):
         self._response = self._app.get('/health')
 
         self.assertEqual(self._response.status, '200 OK')
+
+
+class TestTranslatorController(BaseTestCase):
+    """Tests the translator controller."""
+    def setUp(self):
+        super().setUp()
+
+    def testFetch(self):
+        """Tests the fetch endpoint.
+
+        :return: None
+        :rtype: None
+        """
+        pass

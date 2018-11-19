@@ -50,7 +50,7 @@ class Translator(object):
         _headers = {}
         for header, value in existing_headers.items():
             if header.lower() in utils.SUPPORTED_HEADERS:
-                _headers[header] = value
+                _headers[header.lower()] = value
 
         # Add the signature to the headers, this will override the previous
         # header that we got from the Data Broker API.

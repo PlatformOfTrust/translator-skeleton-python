@@ -64,6 +64,7 @@ class Translator(object):
 
     @request_args({
         'timestamp': fields.Str(required=True),
+        'productCode': fields.Str(required=True),
         'parameters': fields.Dict(allow_none=True),
     })
     def fetch(self, args: dict) -> responses.JSONResponse:
@@ -75,12 +76,11 @@ class Translator(object):
         :rtype: responses.JSONResponse
         :raise ValidationFailed: If the validation fails.
         """
-        # Validate security.
-        headers = bottle.request.headers
+        # Validate security
         try:
-            utils.validate(headers, args)
+            utils.validate(bottle.request.headers, args)
         except bottle.HTTPError:
-            logger.exception('Header validation failed.')
+            logger.exception('Validation failed.')
             raise ValidationFailed('Validation failed.')
 
         # Get the needed data, based on the parameters sent.
