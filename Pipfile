@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+bottle = "*"
+invoke = "*"
+pathlib = "*"
+webargs = "*"
+requests = "*"
+
+[dev-packages]
+snapshottest = "*"
+webtest = "*"
+pytest = "*"
+pycodestyle = "*"
+pytest-mock = "*"
+mock = "*"
+
+[requires]
+python_version = "3.6"
