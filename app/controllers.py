@@ -86,7 +86,7 @@ class Translator(object):
 
         # Get the needed data, based on the parameters sent.
         data = self._service.get_data(args['parameters'])
-        # Sign the data.
-        headers = self._service.get_headers(data, bottle.request.headers)
         # Return the data.
-        return responses.JSONResponse(data, headers=headers)
+        return responses.JSONResponse(data, headers={
+            'Content-Type': 'application/json'
+        })

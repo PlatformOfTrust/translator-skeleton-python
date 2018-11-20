@@ -4,7 +4,6 @@ Application services are defined in this file.
 Services usually handle communication with the database if it exists, or
 sending requests to other services.
 """
-import utils
 
 
 class Translator(object):
@@ -25,30 +24,3 @@ class Translator(object):
         :rtype: dict
         """
         return {}
-
-    @staticmethod
-    def get_headers(data: dict, existing_headers: dict) -> dict:
-        """Sign the data and add to headers.
-
-        :param data: The data to sign.
-        :type data: dict
-        :param existing_headers: The existing headers.
-        :type existing_headers: dict
-        :return: The headers to pass on to the Data Broker API
-        :rtype: dict
-        """
-
-        # Generate the signature.
-        signature = utils.generate_signature(data)
-
-        # Keep the existing headers that we need.
-        _headers = {}
-        for header, value in existing_headers.items():
-            if header.lower() in utils.SUPPORTED_HEADERS:
-                _headers[header.lower()] = value
-
-        # Add the signature to the headers, this will override the previous
-        # header that we got from the Data Broker API.
-        _headers[utils.X_POT_SIGNATURE] = signature
-
-        return _headers
