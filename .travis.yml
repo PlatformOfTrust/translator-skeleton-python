@@ -1,0 +1,8 @@
+language: python
+python:
+ - "3.6"
+ - "3.7"
+install:
+  - "pip install --no-cache-dir pipenv==11.10.1"
+  - "pipenv install --dev"
+script: pipenv run invoke test
