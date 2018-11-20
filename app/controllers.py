@@ -65,7 +65,11 @@ class Translator(object):
     @request_args({
         'timestamp': fields.Str(required=True),
         'productCode': fields.Str(required=True),
-        'parameters': fields.Dict(allow_none=True),
+        'parameters': fields.Nested(
+            {
+                'name': fields.Str(required=True)
+            }
+        ),
     })
     def fetch(self, args: dict) -> responses.JSONResponse:
         """Returns the data to the PoT Broker API.

@@ -45,13 +45,15 @@ class TestStatusController(BaseTestCase):
 
 class TestTranslatorController(BaseTestCase):
     """Tests the translator controller."""
-    _raw_body = '{"parameters": {"baz": "quox","foo": "bar"},' \
+    _raw_body = '{"parameters": {"baz": "quox","foo": "bar",' \
+                '"name": "The name"},' \
                 '"productCode": "product-1","timestamp": ' \
                 '"2018-11-01T12:01:01Z"}'
     _body = {
         "timestamp": "2018-11-01T12:01:01Z",
         "productCode": "product-1",
         "parameters": {
+            "name": "The name",
             "baz": "quox",
             "foo": "bar",
         }
