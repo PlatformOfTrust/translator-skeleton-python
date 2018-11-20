@@ -4,9 +4,6 @@ Application services are defined in this file.
 Services usually handle communication with the database if it exists, or
 sending requests to other services.
 """
-import base64
-import json
-
 import utils
 
 
@@ -40,11 +37,9 @@ class Translator(object):
         :return: The headers to pass on to the Data Broker API
         :rtype: dict
         """
-        # Get the digest for the data.
-        digest = utils.get_digest(json.dumps(data))
 
-        # Encode the signature.
-        signature = base64.b64encode(digest).decode()
+        # Generate the signature.
+        signature = utils.generate_signature(data)
 
         # Keep the existing headers that we need.
         _headers = {}

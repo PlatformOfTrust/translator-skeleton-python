@@ -76,9 +76,10 @@ class Translator(object):
         :rtype: responses.JSONResponse
         :raise ValidationFailed: If the validation fails.
         """
-        # Validate security
+        # Validate the headers, and the raw request body.
         try:
-            utils.validate(bottle.request.headers, args)
+            raw_body = bottle.request.body.read()
+            utils.validate(bottle.request.headers, raw_body.decode('utf-8'))
         except bottle.HTTPError:
             logger.exception('Validation failed.')
             raise ValidationFailed('Validation failed.')
