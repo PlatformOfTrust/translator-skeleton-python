@@ -4,6 +4,7 @@ Application unit tests for controllers are defined in this file.
 from webtest import TestApp as WebTestApp, \
     TestResponse as WebTestResponse
 
+import utils
 from application import application
 from snapshottest import TestCase
 
@@ -44,8 +45,30 @@ class TestStatusController(BaseTestCase):
 
 class TestTranslatorController(BaseTestCase):
     """Tests the translator controller."""
+    _raw_body = '{"parameters": {"baz": "quox","foo": "bar"},' \
+                '"productCode": "product-1","timestamp": ' \
+                '"2018-11-01T12:01:01Z"}'
+    _body = {
+        "timestamp": "2018-11-01T12:01:01Z",
+        "productCode": "product-1",
+        "parameters": {
+            "baz": "quox",
+            "foo": "bar",
+        }
+    }
+
     def setUp(self):
         super().setUp()
+
+    def testSignatureValidation(self):
+        """Tests the generating and validating of the signature.
+
+        :return: None
+        :rtype: None
+        """
+        signature = utils.generate_signature(self._body)
+
+        self.assertTrue(utils.validate_signature(signature, self._raw_body))
 
     def testFetch(self):
         """Tests the fetch endpoint.
@@ -53,4 +76,30 @@ class TestTranslatorController(BaseTestCase):
         :return: None
         :rtype: None
         """
-        pass
+        signature = utils.generate_signature(self._body)
+        headers = {
+            'x-pot-signature': signature
+        }
+        self._response = self._app.post_json('/fetch',
+                                             params=self._body,
+                                             headers=headers)
+
+        self.assertEqual(self._response.status, '200 OK')
+
+        self.assertMatchSnapshot(self._response.json_body)
+
+    def testFailedSignature(self):
+        """Tests invalid body against signature.
+
+        :return: None
+        :rtype: None
+        """
+        signature = utils.generate_signature(self._body)
+
+        self.assertFalse(
+            utils.validate_signature(
+                signature,
+                '{"timestamp": "2018-11-01T12:01:01Z", '
+                '"productCode": "product-1"}'
+            )
+        )
