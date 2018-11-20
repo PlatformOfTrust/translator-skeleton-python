@@ -54,9 +54,10 @@ def validate(headers: dict, body) -> None:
     :raise MissingRequiredHeaderError: If the validation fails.
     """
     for header, rules in SUPPORTED_HEADERS.items():
-        if rules['required'] and header.lower() not in headers:
+        header = header.lower()
+        if rules['required'] and header not in headers:
             raise MissingRequiredHeaderError(
-                f'Missing required header "{header.lower()}"'
+                f'Missing required header "{header}"'
             )
 
     if validate_signature(headers[X_POT_SIGNATURE], body):
