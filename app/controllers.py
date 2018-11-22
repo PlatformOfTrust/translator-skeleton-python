@@ -86,7 +86,7 @@ class Translator(object):
             utils.validate(bottle.request.headers, raw_body.decode('utf-8'))
         except bottle.HTTPError:
             logger.exception('Validation failed.')
-            raise ValidationFailed('Validation failed.')
+            raise ValidationFailed({'error': 'Validation failed.'})
 
         # Get the needed data, based on the parameters sent.
         data = self._service.get_data(args['parameters'])

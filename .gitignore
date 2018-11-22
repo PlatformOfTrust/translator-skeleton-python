@@ -75,3 +75,6 @@ target/
 # mkdocs documentation
 /site
 .jsbeautifyrc
+
+node_modules/
+docs/index.html

@@ -1,0 +1,10 @@
+{
+  "name": "platform-of-trust-translator",
+  "private": true,
+  "devDependencies": {
+    "raml2html": "7.2.0"
+  },
+  "scripts": {
+    "generate": "raml2html"
+  }
+}
