@@ -77,3 +77,4 @@ target/
 .jsbeautifyrc
 
 node_modules/
+docs/index.html
