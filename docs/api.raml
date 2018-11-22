@@ -1,0 +1,111 @@
+#%RAML 1.0
+---
+title: Platform Of Trust Translator
+version: v1
+baseUri: http://{base_url}/{version}
+mediaType: application/json
+types:
+  fetch-request:
+    type: object
+    properties:
+      timestamp:
+        description: The timestamp when the request was sent. RFC3339 format.
+        type: datetime
+        example: "2018-11-22T10:00:00Z"
+      productCode:
+        description: The product code of the data product.
+        type: string
+        example: example-room-temperature
+      parameters:
+        description: Optional additional parameters that the translator needs.
+        type: object
+        example: |
+          {
+            "deviceId": "r_305_d_32"
+          }
+/health:
+  description: API Health endpoints
+  get:
+    description: Health check endpoint
+    responses:
+      200:
+        body:
+          example: {}
+/fetch:
+  description: Fetch data from data source
+  post:
+    description: Get the data for the translator
+    body:
+      type: fetch-request
+      example: |
+        {
+          "timestamp": "2018-11-22T10:00:00Z",
+          "productCode": "example-room-temperature",
+          "parameters": {
+            "deviceId": "r_305_d_32"
+          }
+        }
+    responses:
+      200:
+        body:
+          properties:
+            '@context':
+              description: The URL to the context. Should match data product context.
+              type: string
+              example: https://example.org/contexts/room-temperature.jsonld
+            data:
+              description: Any data returned from the source.
+              type: object
+              example: |
+                {
+                  "deviceId": "r_305_d_32",
+                  "temperature": {
+                    "service_type": "temperature",
+                    "unit_measurement": "Celsius",
+                    "value": "22.5"
+                  }
+                }
+            signature:
+              description: Signature information
+              type: object
+              example: |
+                {
+                  "type": "<should match organizationPublicKeyURL in data product>",
+                  "created": "<RFC3339 timestamp>",
+                  "creator": "<should match organizationSignatureType in data product>",
+                  "signatureValue": "<the value of the signature>"
+                }
+          example: |
+            {
+              "@context": "https://example.org/contexts/room-temperature.jsonld",
+              "data": {
+                "deviceId": "r_305_d_32",
+                  "temperature": {
+                    "service_type": "temperature",
+                    "unit_measurement": "Celsius",
+                    "value": "22.5"
+                  }
+              },
+              "signature": {
+                "type": "RsaSignature2018",
+                "created": "2018-11-22T12:00:00Z",
+                "creator": "https://example.org/creator/public_key.pub",
+                "signatureValue": "eyJ0eXAiOiJK...gFWFOEjXk"
+              }
+            }
+      422:
+        body:
+          examples:
+            'Validation failed': |
+              {"error": "Validation failed."}
+            'Missing required field': |
+              {
+                "error": {
+                  "status": 422,
+                  "message": {
+                    "timestamp": [
+                      "Missing data for required field."
+                    ]
+                  }
+                }
+              }
