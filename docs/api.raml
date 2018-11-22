@@ -35,6 +35,21 @@ types:
   description: Fetch data from data source
   post:
     description: Get the data for the translator
+    headers:
+      X-PoT-Signature:
+        description: |
+          A HMAC-SHA256 generated signature of the payload.
+          E.g. HMAC-SHA256(sharedSecret, body)
+        type: string
+        example: jxj28KTspn2DR4ryIX4YzSqKz9IEQuYQGw9LpRK5ydg=
+      X-PoT-Token?:
+        description: The user's OAuth token
+        type: string
+        example: ryIX4YzSqKz9I
+      X-PoT-App?:
+        description: App name (App ID)
+        type: string
+        example: Test Application (e73c3e11-1500-4fb6-854d-07806724ce0f)
     body:
       type: fetch-request
       example: |
@@ -70,9 +85,9 @@ types:
               type: object
               example: |
                 {
-                  "type": "<should match organizationPublicKeyURL in data product>",
+                  "type": "<should match organizationSignatureType in data product>",
                   "created": "<RFC3339 timestamp>",
-                  "creator": "<should match organizationSignatureType in data product>",
+                  "creator": "<should match organizationPublicKeyURL in data product>",
                   "signatureValue": "<the value of the signature>"
                 }
           example: |
