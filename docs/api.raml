@@ -111,8 +111,20 @@ types:
       422:
         body:
           examples:
-            'Validation failed': |
-              {"error": "Validation failed."}
+            'Signature validation failed': |
+              {
+                "error": {
+                  "status": 422,
+                  "message": "Signature validation failed."
+                }
+              }
+            'Missing required header': |
+              {
+                "error": {
+                  "status": 422,
+                  "message": "Missing required header \"x-pot-signature\""
+                }
+              }
             'Missing required field': |
               {
                 "error": {

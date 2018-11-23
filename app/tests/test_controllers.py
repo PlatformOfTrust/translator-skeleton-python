@@ -45,17 +45,12 @@ class TestStatusController(BaseTestCase):
 
 class TestTranslatorController(BaseTestCase):
     """Tests the translator controller."""
-    _raw_body = '{"parameters": {"baz": "quox","foo": "bar",' \
-                '"name": "The name"},' \
-                '"productCode": "product-1","timestamp": ' \
-                '"2018-11-01T12:01:01Z"}'
+
     _body = {
         "timestamp": "2018-11-01T12:01:01Z",
         "productCode": "product-1",
         "parameters": {
             "name": "The name",
-            "baz": "quox",
-            "foo": "bar",
         }
     }
 
@@ -70,7 +65,7 @@ class TestTranslatorController(BaseTestCase):
         """
         signature = utils.generate_signature(self._body)
 
-        self.assertTrue(utils.validate_signature(signature, self._raw_body))
+        self.assertTrue(utils.validate_signature(signature, self._body))
 
     def testFetch(self):
         """Tests the fetch endpoint.
@@ -80,7 +75,7 @@ class TestTranslatorController(BaseTestCase):
         """
         signature = utils.generate_signature(self._body)
         headers = {
-            'x-pot-signature': signature
+            'X-Pot-Signature': signature
         }
         self._response = self._app.post_json('/fetch',
                                              params=self._body,
@@ -105,3 +100,27 @@ class TestTranslatorController(BaseTestCase):
                 '"productCode": "product-1"}'
             )
         )
+
+    def testMissingAttribute(self):
+        """Tests missing mandatory attribute.
+
+        :return: None
+        :rtype: None
+        """
+        params = {
+            'timestamp': '2018-11-01T12:01:01Z',
+            'parameters': {
+                'name': 'Test'
+            }
+        }
+
+        signature = utils.generate_signature(params)
+        headers = {
+            'X-Pot-Signature': signature
+        }
+        self._response = self._app.post_json('/fetch',
+                                             params=params,
+                                             headers=headers,
+                                             expect_errors=True)
+
+        self.assertMatchSnapshot(self._response.json_body)

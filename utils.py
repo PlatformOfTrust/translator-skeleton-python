@@ -60,7 +60,7 @@ def validate(headers: dict, body) -> None:
                 f'Missing required header "{header}"'
             )
 
-    if validate_signature(headers[X_POT_SIGNATURE], body):
+    if not validate_signature(headers[X_POT_SIGNATURE], body):
         raise ValidationError('Signature validation failed.')
 
     # Todo: validate timestamp as well.
@@ -72,7 +72,7 @@ def validate_signature(signature: str, body) -> bool:
     :param signature: The signature to validate.
     :type signature: str
     :param body: The request body
-    :type body: str
+    :type body: str|dict
     :return: True if signature verification successful, False otherwise.
     :rtype: bool
     """
@@ -81,7 +81,7 @@ def validate_signature(signature: str, body) -> bool:
 
     # Compare the digest and return the answer.
     return hmac.compare_digest(
-        signature.encode('utf-8'),
+        signature.strip().encode('utf-8'),
         base64.b64encode(digest)
     )
 
@@ -108,9 +108,9 @@ def get_digest(body) -> str:
             sort_keys=True,
             indent=None,
             separators=(',', ': ')
-        )
+        ).strip()
     else:
-        body_hash = body
+        body_hash = body.strip()  # Strip white space from start and end.
 
     # Create the HMAC digest with SHA-256.
     return hmac.new(secret.encode('utf-8'),
