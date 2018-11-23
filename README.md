@@ -42,6 +42,12 @@ and run `pipenv run invoke docs`.
 This will generate an `index.html`-file under `docs/`. Open the file in your 
 browser to check that the documentation is in order.
 
+The HTML API documentation for the skeleton can be found [here](https://platformoftrust.github.io/translator-skeleton-python/)
+
+## Changes
+
+Changes in the translator skeleton can be found in the [CHANGELOG](CHANGELOG.md).
+
 ## License
 
 MIT, see [LICENSE](LICENSE).
