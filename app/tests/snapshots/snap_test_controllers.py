@@ -9,3 +9,14 @@ snapshots = Snapshot()
 
 snapshots['TestTranslatorController::testFetch 1'] = {
 }
+
+snapshots['TestTranslatorController::testMissingAttribute 1'] = {
+    'error': {
+        'message': {
+            'productCode': [
+                'Missing data for required field.'
+            ]
+        },
+        'status': 422
+    }
+}

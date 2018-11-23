@@ -10,7 +10,8 @@ import app.services as services
 import utils
 from webargs import fields
 
-from exceptions import ValidationFailed
+from exceptions import ValidationFailed, ValidationError, \
+    MissingRequiredHeaderError
 from log import logger
 
 
@@ -68,7 +69,7 @@ class Translator(object):
         'parameters': fields.Nested(
             {
                 'name': fields.Str(required=True)
-            }
+            }, required=True
         ),
     })
     def fetch(self, args: dict) -> responses.JSONResponse:
@@ -80,13 +81,15 @@ class Translator(object):
         :rtype: responses.JSONResponse
         :raise ValidationFailed: If the validation fails.
         """
-        # Validate the headers, and the raw request body.
+        # Validate the headers and the request body.
         try:
-            raw_body = bottle.request.body.read()
-            utils.validate(bottle.request.headers, raw_body.decode('utf-8'))
-        except bottle.HTTPError:
-            logger.exception('Validation failed.')
-            raise ValidationFailed({'error': 'Validation failed.'})
+            utils.validate(bottle.request.headers, bottle.request.json)
+        except ValidationError as ex:
+            logger.exception('Signature validation failed.')
+            raise ValidationFailed(ex.body)
+        except MissingRequiredHeaderError as ex:
+            logger.exception('Header validation failed.')
+            raise ValidationFailed(ex.body)
 
         # Get the needed data, based on the parameters sent.
         data = self._service.get_data(args['parameters'])
