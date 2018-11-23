@@ -2,12 +2,18 @@
 Main application.
 """
 import bottle
+
+import error
 import settings
 import routes
 import log
 
 application = bottle.Bottle()
-application.catchall = True
+# Set our custom error handler.
+application.error_handler = error.handler
+# If debugging on, let bottle handle the exception.
+if settings.DEBUG:
+    application.catchall = True
 
 bottle.debug(settings.DEBUG)
 
