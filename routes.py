@@ -1,10 +1,14 @@
-"""
+"""API Routes
+
 Application routes are defined in this file.
+To add new routes, use app.route(<route>, <method>, <controller.action>)
+If the controller action has any arguments defined, add as last parameter
+apply=use_args(controller.action.args).
 """
-import bottle
-from webargs.bottleparser import use_args
 
 import app.controllers as controllers
+import bottle
+from webargs.bottleparser import use_args
 
 # Instantiate the controllers here, for easy mocking.
 status = controllers.Status()

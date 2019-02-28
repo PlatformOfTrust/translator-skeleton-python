@@ -1,5 +1,6 @@
-"""
-Responses are defined in this file.
+"""API Responses.
+
+The API Responses are defined in this file.
 
 The responses are returned in the controllers to the consumer.
 """

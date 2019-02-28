@@ -1,12 +1,16 @@
-"""
+"""API tests.
+
 Application unit tests for controllers are defined in this file.
 """
-from webtest import TestApp as WebTestApp, \
-    TestResponse as WebTestResponse
+import app.utils
+import settings
 
-import utils
 from application import application
 from snapshottest import TestCase
+from webtest import (
+    TestApp as WebTestApp,
+    TestResponse as WebTestResponse
+)
 
 
 class BaseTestCase(TestCase):
@@ -32,7 +36,7 @@ class TestStatusController(BaseTestCase):
     def setUp(self) -> None:
         super().setUp()
 
-    def testHealth(self) -> None:
+    def test_health(self) -> None:
         """Tests the health check endpoint.
 
         :return: None
@@ -47,35 +51,42 @@ class TestTranslatorController(BaseTestCase):
     """Tests the translator controller."""
 
     _body = {
-        "timestamp": "2018-11-01T12:01:01Z",
-        "productCode": "product-1",
-        "parameters": {
-            "name": "The name",
+        'timestamp': '2018-11-01T12:01:01Z',
+        'productCode': 'product-1',
+        'parameters': {
+            'name': 'The name',
         }
     }
 
     def setUp(self):
         super().setUp()
 
-    def testSignatureValidation(self):
+    def test_signature_validation(self):
         """Tests the generating and validating of the signature.
 
         :return: None
         :rtype: None
         """
-        signature = utils.generate_signature(self._body)
+        signature = app.utils.generate_signed_data(
+            self._body,
+            settings.PRIVATE_KEY
+        )
 
-        self.assertTrue(utils.validate_signature(signature, self._body))
+        self.assertTrue(app.utils.validate_signed_data(
+            self._body,
+            signature,
+            settings.PUBLIC_KEY
+        ))
 
-    def testFetch(self):
+    def test_fetch(self):
         """Tests the fetch endpoint.
 
         :return: None
         :rtype: None
         """
-        signature = utils.generate_signature(self._body)
         headers = {
-            'X-Pot-Signature': signature
+            'X-Pot-Signature': 'foo',
+            'X-Pot-App': 'bar'
         }
         self._response = self._app.post_json('/fetch',
                                              params=self._body,
@@ -85,23 +96,28 @@ class TestTranslatorController(BaseTestCase):
 
         self.assertMatchSnapshot(self._response.json_body)
 
-    def testFailedSignature(self):
+    def test_failed_signature(self):
         """Tests invalid body against signature.
 
         :return: None
         :rtype: None
         """
-        signature = utils.generate_signature(self._body)
+        signature = app.utils.generate_signed_data(
+            self._body,
+            settings.PRIVATE_KEY
+        )
 
         self.assertFalse(
-            utils.validate_signature(
+            app.utils.validate_signed_data(
+                {
+                    'productCode': 'product-1'
+                },
                 signature,
-                '{"timestamp": "2018-11-01T12:01:01Z", '
-                '"productCode": "product-1"}'
+                settings.PUBLIC_KEY
             )
         )
 
-    def testMissingAttribute(self):
+    def test_missing_attribute(self):
         """Tests missing mandatory attribute.
 
         :return: None
@@ -114,9 +130,9 @@ class TestTranslatorController(BaseTestCase):
             }
         }
 
-        signature = utils.generate_signature(params)
         headers = {
-            'X-Pot-Signature': signature
+            'X-Pot-Signature': 'foo',
+            'X-Pot-App': 'bar'
         }
         self._response = self._app.post_json('/fetch',
                                              params=params,

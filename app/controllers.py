@@ -1,18 +1,21 @@
-"""
+"""API Controllers.
+
 Application controllers are defined in this file.
 
 The controllers handle all requests and routes, returns responses to consumers.
 """
+import app.utils
 import bottle
-
 import app.responses as responses
 import app.services as services
-import utils
-from webargs import fields
 
-from exceptions import ValidationFailed, ValidationError, \
+from exceptions import (
+    ValidationFailed,
+    ValidationError,
     MissingRequiredHeaderError
+)
 from log import logger
+from webargs import fields
 
 
 def request_args(args):
@@ -69,11 +72,16 @@ class Translator(object):
         'parameters': fields.Nested(
             {
                 'name': fields.Str(required=True)
-            }, required=True
+            }, required=True, only=None
         ),
     })
     def fetch(self, args: dict) -> responses.JSONResponse:
         """Returns the data to the PoT Broker API.
+
+        The request_args.parameters can be more fine grained if needed, e.g.
+        to only validate certain parameters, add `only=("name", "other")`
+        after `required=True`. You can also exclude some parameters from
+        validation with `exclude=("exclude", "exclude_other")`.
 
         :param args: The arguments for the request.
         :type args: dict
@@ -83,7 +91,7 @@ class Translator(object):
         """
         # Validate the headers and the request body.
         try:
-            utils.validate(bottle.request.headers, bottle.request.json)
+            app.utils.validate(bottle.request.headers, bottle.request.json)
         except ValidationError as ex:
             logger.exception('Signature validation failed.')
             raise ValidationFailed(ex.body)

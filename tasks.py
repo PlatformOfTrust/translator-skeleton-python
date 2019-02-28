@@ -15,7 +15,8 @@ API_DOCS_DIR = Path(f'{APP_DIR}/docs')
 @task
 def dev(ctx):
     """Run the application (use when developing)."""
-    ctx.run("python application.py")
+    ctx.run('pipenv install --dev')
+    ctx.run('python application.py')
 
 
 @task

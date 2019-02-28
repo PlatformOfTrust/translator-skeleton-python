@@ -28,8 +28,14 @@ DEBUG = True
 # auto-reload
 RELOAD = True
 
-# The shared secret that was generated when the data product was created.
-SHARED_SECRET = 'very_secret123'
+# The Platform Of Trust public key.
+POT_PUBLIC_KEY = None
+# Public key used for verifying signatures.
+PUBLIC_KEY = None
+# Private key used for signing.
+PRIVATE_KEY = None
+
+# Add custom definitions below.
 
 # Load local settings if any.
 try:

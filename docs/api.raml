@@ -39,7 +39,7 @@ types:
       X-PoT-Signature:
         description: |
           A HMAC-SHA256 generated signature of the payload.
-          E.g. HMAC-SHA256(sharedSecret, body)
+          E.g. HMAC-SHA256(<pot private key>, <body>)
         type: string
         example: jxj28KTspn2DR4ryIX4YzSqKz9IEQuYQGw9LpRK5ydg=
       X-PoT-Token?:
@@ -47,9 +47,9 @@ types:
         type: string
         example: ryIX4YzSqKz9I
       X-PoT-App?:
-        description: App name (App ID)
+        description: App ID
         type: string
-        example: Test Application (e73c3e11-1500-4fb6-854d-07806724ce0f)
+        example: e73c3e11-1500-4fb6-854d-07806724ce0f
     body:
       type: fetch-request
       example: |
@@ -81,13 +81,20 @@ types:
                   }
                 }
             signature:
-              description: Signature information
+              description: |
+                Signature information. The signature is generated based on the
+                `data` object with the `created` value added to the key
+                `__signed__`. The `__signed__` is NOT returned in the data, but
+                MUST be added when validating the signature.
+                The `type` MUST match the data product `organizationPublicKeys.type`
+                value and the `creator` MUST match the data product `organizationPublicKeys.url`
+                value.
               type: object
               example: |
                 {
-                  "type": "<should match organizationSignatureType in data product>",
-                  "created": "<RFC3339 timestamp>",
-                  "creator": "<should match organizationPublicKeyURL in data product>",
+                  "type": "<should match organizationPublicKeys.type in data product>",
+                  "created": "<RFC3339 timestamp when data was fetched>",
+                  "creator": "<should match organizationPublicKeys.url in data product>",
                   "signatureValue": "<the value of the signature>"
                 }
           example: |
