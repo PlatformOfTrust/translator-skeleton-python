@@ -67,8 +67,7 @@ line.
 
 To generate the PEM keys used for the signing of data:
 
-    ssh-keygen -t rsa -b 4096 -m PEM -f RS256.key
-    # Don't add passphrase
+    ssh-keygen -t rsa -b 4096 -q -N "" -m PEM -f RS256.key
     openssl rsa -in RS256.key -pubout -outform PEM -out RS256.key.pub
 
 Base64 encode the public and private keys
