@@ -37,7 +37,7 @@ list:
         }
     ]
 
-See [Generating private and public keys](.#Generating-private-and-public-keys)
+See [Generating private and public keys](README.md#Generating-private-and-public-keys)
 
 Now define the created keys in `settings.py` as the environment variables
 `PRIVATE_KEY` and `PUBLIC_KEY` respectively. *IMPORTANT*: Do NOT commit the 
