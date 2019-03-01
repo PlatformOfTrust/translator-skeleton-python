@@ -9,6 +9,8 @@ import app.utils
 import base64
 import settings
 
+from copy import copy
+
 
 class Translator(object):
     """Translator service.
@@ -36,6 +38,8 @@ class Translator(object):
         # organizationPublicKeys[].type
         # The signature.creator MUST be same as defined in the data product
         # organizationPublicKeys[].url
+        # If multiple keys are defined for the data product, at least one of
+        # the defined keys MUST validate.
         return {
             '@context': '',
             '@type': '',
@@ -64,12 +68,14 @@ class Translator(object):
         :return: The signature.
         :rtype: str
         """
-        # Include the created at time in the data.
-        data['__signed__'] = created_at
+        # Make a copy of the data, and include the created at time in the data.
+        sign_data = copy(data)
+        sign_data['__signed__'] = created_at
         # Todo: Use the corresponding private key that was defined in the
         #  data product organizationPublicKeys[].url
-        signature = app.utils.generate_signed_data(data, settings.PRIVATE_KEY)
-        # We don't want the "metadata" to be included in the response.
-        del data['__signed__']
+        signature = app.utils.generate_signed_data(
+            sign_data,
+            settings.PRIVATE_KEY
+        )
 
         return base64.b64encode(signature).decode("utf-8")

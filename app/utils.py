@@ -98,9 +98,9 @@ def get_signature_payload(body) -> str:
 
     The body of the payload may be a dict or a string.
 
-    :param body: The body to be hashed.
+    :param body: The body to be "stringified".
     :type body: str|dict
-    :return: The body hash.
+    :return: The body as a string.
     :rtype: str
     :raise RuntimeError: IF the body is not a string or dict.
     """
@@ -108,18 +108,18 @@ def get_signature_payload(body) -> str:
         raise RuntimeError(
             f'Invalid body type. Must be `str` or `dict`, got {type(body)}')
 
-    # Create the hash from the body dict.
+    # Create a string from the body dict.
     if isinstance(body, dict):
-        body_hash = json.dumps(
+        body_string = json.dumps(
             body,
             sort_keys=True,
             indent=None,
             separators=(',', ': ')
         ).strip()
     else:
-        body_hash = body.strip()  # Strip white space from start and end.
+        body_string = body.strip()  # Strip white space from start and end.
 
-    return body_hash
+    return body_string
 
 
 def generate_signed_data(payload, private_pem: str) -> str:
@@ -132,10 +132,10 @@ def generate_signed_data(payload, private_pem: str) -> str:
     :return: The signature.
     :rtype: str
     """
-    payload_hash = get_signature_payload(payload)
+    payload_string = get_signature_payload(payload)
     alg_obj = RSAAlgorithm(RSAAlgorithm.SHA256)
     key = alg_obj.prepare_key(private_pem)
-    return alg_obj.sign(payload_hash.encode('utf-8'), key)
+    return alg_obj.sign(payload_string.encode('utf-8'), key)
 
 
 def validate_signed_data(payload, signature: str, public_pem: str) -> bool:
@@ -150,7 +150,7 @@ def validate_signed_data(payload, signature: str, public_pem: str) -> bool:
     :return: True if signature valid, False otherwise.
     :rtype: bool
     """
-    payload_hash = get_signature_payload(payload)
+    payload_string = get_signature_payload(payload)
     alg_obj = RSAAlgorithm(RSAAlgorithm.SHA256)
     key = alg_obj.prepare_key(public_pem)
-    return alg_obj.verify(payload_hash.encode('utf-8'), key, signature)
+    return alg_obj.verify(payload_string.encode('utf-8'), key, signature)

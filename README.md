@@ -21,8 +21,8 @@ You need the following installed on your computer:
 
 ## Implementing a translator
 
-Add the Platform Of Trust public key to the `settings.py` `POT_PUBLIC_KEY`
-environment variable. This public key is used for validating the signature
+Add the Platform Of Trust public key to the `settings.py` `POT_PUBLIC_KEY` 
+variable. This public key is used for validating the signature
 header sent from the Platform Of Trust Data Broker API.
 
 You need to create a private/public key pair to be used with the translator.
@@ -36,8 +36,6 @@ list:
             "url": "https://example.com/public-key.pub"
         }
     ]
-
-See [Generating private and public keys](README.md#Generating-private-and-public-keys)
 
 Now define the created keys in `settings.py` as the environment variables
 `PRIVATE_KEY` and `PUBLIC_KEY` respectively. *IMPORTANT*: Do NOT commit the 
@@ -62,18 +60,6 @@ Remember to update the tests when creating the translator.
 There is an `invoke` task for running tests, run `pipenv run invoke test`.
 Or run the command `ENV=test python -m pytest` to run the tests on the command
 line.
-
-# Generating private and public keys
-
-To generate the PEM keys used for the signing of data:
-
-    ssh-keygen -t rsa -b 4096 -q -N "" -m PEM -f RS256.key
-    openssl rsa -in RS256.key -pubout -outform PEM -out RS256.key.pub
-
-Base64 encode the public and private keys
-    
-    cat RS256.key | base64 -w0
-    cat RS256.key.pub | base64 -w0
 
 ## API documentation
 

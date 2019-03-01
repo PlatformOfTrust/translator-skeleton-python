@@ -38,8 +38,8 @@ types:
     headers:
       X-PoT-Signature:
         description: |
-          A HMAC-SHA256 generated signature of the payload.
-          E.g. HMAC-SHA256(<pot private key>, <body>)
+          A HMAC-RSA256 generated signature of the payload.
+          E.g. HMAC-RSA256(<pot private key>, <body>)
         type: string
         example: jxj28KTspn2DR4ryIX4YzSqKz9IEQuYQGw9LpRK5ydg=
       X-PoT-Token?:
@@ -86,8 +86,8 @@ types:
                 `data` object with the `created` value added to the key
                 `__signed__`. The `__signed__` is NOT returned in the data, but
                 MUST be added when validating the signature.
-                The `type` MUST match the data product `organizationPublicKeys.type`
-                value and the `creator` MUST match the data product `organizationPublicKeys.url`
+                The `type` MUST match one of the data product `organizationPublicKeys[].type`
+                value and the `creator` MUST match one of the data product `organizationPublicKeys[].url`
                 value.
               type: object
               example: |
