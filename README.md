@@ -37,6 +37,8 @@ list:
         }
     ]
 
+See [Generating private and public keys](README.md#Generating-private-and-public-keys)
+
 Now define the created keys in `settings.py` as the environment variables
 `PRIVATE_KEY` and `PUBLIC_KEY` respectively. *IMPORTANT*: Do NOT commit the 
 private key to the repository, but instead use e.g. encryption or docker
@@ -60,6 +62,13 @@ Remember to update the tests when creating the translator.
 There is an `invoke` task for running tests, run `pipenv run invoke test`.
 Or run the command `ENV=test python -m pytest` to run the tests on the command
 line.
+
+# Generating private and public keys
+
+To generate the PEM keys used for the signing of data:
+
+    ssh-keygen -t rsa -b 4096 -q -N "" -m PEM -f RS256.key
+    openssl rsa -in RS256.key -pubout -outform PEM -out RS256.key.pub
 
 ## API documentation
 
