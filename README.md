@@ -72,8 +72,8 @@ To generate the PEM keys used for the signing of data:
 
 Base64 encode the public and private keys
     
-    cat RS256.key | base64
-    cat RS256.key.pub | base64
+    cat RS256.key | base64 -w0
+    cat RS256.key.pub | base64 -w0
 
 ## API documentation
 

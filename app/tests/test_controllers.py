@@ -2,7 +2,10 @@
 
 Application unit tests for controllers are defined in this file.
 """
+from unittest import mock
+
 import app.utils
+import base64
 import settings
 
 from application import application
@@ -78,14 +81,20 @@ class TestTranslatorController(BaseTestCase):
             settings.PUBLIC_KEY
         ))
 
-    def test_fetch(self):
+    @mock.patch('app.utils.rfc3339')
+    def test_fetch(self, mock_rfc3339):
         """Tests the fetch endpoint.
 
         :return: None
         :rtype: None
         """
+        mock_rfc3339.return_value = '2019-03-01T08:31:26+00:00'
+        signature = app.utils.generate_signed_data(
+            self._body,
+            settings.PRIVATE_KEY
+        )
         headers = {
-            'X-Pot-Signature': 'foo',
+            'X-Pot-Signature': base64.b64encode(signature).decode("utf-8"),
             'X-Pot-App': 'bar'
         }
         self._response = self._app.post_json('/fetch',
@@ -129,9 +138,12 @@ class TestTranslatorController(BaseTestCase):
                 'name': 'Test'
             }
         }
-
+        signature = app.utils.generate_signed_data(
+            params,
+            settings.PRIVATE_KEY
+        )
         headers = {
-            'X-Pot-Signature': 'foo',
+            'X-Pot-Signature': base64.b64encode(signature).decode("utf-8"),
             'X-Pot-App': 'bar'
         }
         self._response = self._app.post_json('/fetch',
