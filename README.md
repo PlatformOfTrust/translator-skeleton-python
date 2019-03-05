@@ -21,17 +21,54 @@ You need the following installed on your computer:
 
 ## Implementing a translator
 
-In `settings.py` there's the `SHARED_SECRET` that you have to set. The shared 
-secret is shown once, when the data product is created in the Platform Of Trust
-Product API.
+Add the Platform Of Trust public key to the `settings.py` `POT_PUBLIC_KEY` 
+variable. This public key is used for validating the signature
+header sent from the Platform Of Trust Data Broker API.
+
+You need to create a private/public key pair to be used with the translator.
+The public key URL MUST be added to the data product when creating it in the 
+Platform Of Trust Product API. It is defined in the `organizationPublicKeys`
+list:
+
+    "organizationPublicKeys": [
+        {
+            "type": "RsaSignature2018",
+            "url": "https://example.com/public-key.pub"
+        }
+    ]
+
+See [Generating private and public keys](README.md#Generating-private-and-public-keys)
+
+Now define the created keys in `settings.py` as the environment variables
+`PRIVATE_KEY` and `PUBLIC_KEY` respectively. *IMPORTANT*: Do NOT commit the 
+private key to the repository, but instead use e.g. encryption or docker
+environment variables for it. 
 
 Make sure you implement the `services.get_data()` function that handles
 the getting of the actual data to return to the Data Broker API.
+
+There are placeholders for some of the mandatory parameters in the skeleton code.
+Make sure you implement the correct values for the response.
 
 You should also update the unit tests in the `app/tests` to match your changes.
 
 Make sure you update the `@request_args()`-decorator for the `parameter`-field if you
 require any additional parameters. For now, the `parameters.name` is required.
+
+# Tests
+
+The tests for controllers are found under [app/tests/](app/tests).
+Remember to update the tests when creating the translator.
+There is an `invoke` task for running tests, run `pipenv run invoke test`.
+Or run the command `ENV=test python -m pytest` to run the tests on the command
+line.
+
+# Generating private and public keys
+
+To generate the PEM keys used for the signing of data:
+
+    ssh-keygen -t rsa -b 4096 -q -N "" -m PEM -f RS256.key
+    openssl rsa -in RS256.key -pubout -outform PEM -out RS256.key.pub
 
 ## API documentation
 

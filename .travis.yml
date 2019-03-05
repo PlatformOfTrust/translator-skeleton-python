@@ -5,6 +5,7 @@ install:
  - yarn install
  - pip install --no-cache-dir pipenv==11.10.1
  - pipenv install --dev
+ - cp settings.travis.py settings_local.py
 script:
  - pipenv run invoke test
  - pipenv run invoke docs
