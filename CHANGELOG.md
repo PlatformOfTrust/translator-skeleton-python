@@ -5,8 +5,8 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.2.1] - 2019-03-05
 ### Changed
-- Switched to use PyCryptodome instead of PyCrypto
-- Updated tests
+- Switch to use PyCryptodome instead of PyCrypto
+- Update tests
 
 ## [0.2.0] - 2019-03-05
 ### Added
