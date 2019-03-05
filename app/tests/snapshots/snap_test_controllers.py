@@ -14,20 +14,7 @@ snapshots['TestTranslatorController::test_fetch 1'] = {
     'signature': {
         'created': '2019-03-01T08:31:26+00:00',
         'creator': '',
-        'signatureValue': 'FCL/Sef+pa5fDKId4k2IPrr+S9Mn+rFG6ub4fpb7zNo1+vAIaIp'
-                          'KPPj2CIaBtcSCmi8qdKwKCEvjDF9VlZqqDqj+85kxWl90b9LFPu'
-                          'FdAavrh0TD8rMDgBvBnDRElo8Y/C+D9ngfB032LATBRzqCjeaWO'
-                          'gRUUZiBhwiC7RnnWVy7cYsu+FaFbCROZQd8tXz/NftmgmdHJFJs'
-                          'tddI4L8yZUNk7D7a/7+iyCNriQ0vrZeN32YdtsUxQtQPIq3NVkB'
-                          'yCDyUgd5/N3zl18cH3njzd9TGQvLWRCLETqY++BPfltUYb0ohB/'
-                          'kcpB/ph9MocoV9tWNwLaQE4FSDUYHu9d0Gf8ncPAWoKBZ6ksnS5'
-                          'x5071MHbGr9MDEGDyIsh6XcCLNWTf2aDtaP1EET+a5zeDnLvLxh'
-                          'ee0wnXQE1/UCD0iQHkeOhu35DBYFAjlBQ4JSE1BEN5RAEQ7L1ZT'
-                          'qn3Lk8BujO4x7L2qj3IkSDC77VtgteTvPrM9UaasAUlGzYpnGp7'
-                          'Ixn33EaAyOQknn3Kb/aV6q4fpa3yjNZKCCiiEXo4VjadHPZkc1T'
-                          'uLymneRJNe1GI4l12A/BwUG/u6swe2TF3ZTNETLmTug9U+5lyH4'
-                          'UDUs4sIJwB5lQmjQKuW896FMwG9/bu72lIgUYyGMvcWqKNoqp4t'
-                          'x/6YjyqCbrzCU+QGPNhI=',
+        'signatureValue': 'MuGwiD8Fwubij43YKo6+cpkajOtnNObJpe8pTF/hOyGdWY10IvNMRjtguSBn55VwqCe5K2uwzIg7kNp80YeVFYjJ3Tb7ZbSdjtLAthbUdIuVTYOR9gCUUHVY2wKrhz8HN+RrONIsqLYwk3o6+ebb1AXPmzyu4MCir491x1W+kaeM5gKFVUTDbB3j6rjlvFu3mvjgBPqyuOBE92dtfP30PZtU0OjZbkWotHKvtukU93cexqxdjTRzFfeLAqTQbQlBrGsxFV93+i2hyGCQ95jMkqHBvPS9Lgp4v84F4dSn5Jzytsl8khNZR3cUR3ZgblGE1/wRIykCKl5QOaOt6TCI/uqOgBey+jNMzQ5I4DqF9CR16JAjRfiA4IClYrUpFohrOS+Idl1kjL+Xga/q+HiFwZMrQb7xBblzm9jHIwo6DZro4UmPkPPQoq7fnuNnd1BBHDwMelKlUmmyIngh5KyaMrmvY/fkD2bo/n/l3kgJs1df5sk4k5DVfcghjspNMACY+KqKJ1NvP5hp8NOlQ8eFXBurXzhX4iS1kkHvNjzW2gDzlkaxrw9OvZQsh+CJRQk8Q89sY3ApIF3ygWgZxAQko4Oe1eLELTTUairTdYzpCIs8pEipEa6n9T+aFvGaGpyASkvXNN1XIp3F0bSRZhIj7ZZIGtdmy3ZcId0XeqrAKuY=',
         'type': ''
     }
 }
