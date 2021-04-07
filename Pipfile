@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-bottle = "==0.12.13"
+bottle = "==0.12.19"
 cryptography = "==2.4.2"
 invoke = "==1.1.1"
 passlib = "==1.7.1"
